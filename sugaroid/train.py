@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Inteligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,3 +25,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 """
+
+
+class SugaroidTrainer:
+    def __init__(self, path_to_local_database):
+        pass

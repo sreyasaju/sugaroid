@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -47,24 +48,36 @@ class ImitateAdapter(LogicAdapter):
     def can_process(self, statement):
         self.normalized = normalize(str(statement))
         more_words = len(self.normalized) > 3
-        logging.info("ImitatorSensei: userhistory {}, history: {}".format(
-            self.chatbot.globals['history']['user'], self.chatbot.globals['history']['total']))
-        if self.chatbot.globals['history']['user'][-1] and self.chatbot.globals['history']['total'][-1] and more_words:
+        logging.info(
+            "ImitatorSensei: userhistory {}, history: {}".format(
+                self.chatbot.globals["history"]["user"],
+                self.chatbot.globals["history"]["total"],
+            )
+        )
+        if (
+            self.chatbot.globals["history"]["user"][-1]
+            and self.chatbot.globals["history"]["total"][-1]
+            and more_words
+        ):
             return True
         else:
             return False
 
     def process(self, statement, additional_response_selection_parameters=None):
         emotion = Emotion.lol
-        sim = self.chatbot.lp.similarity(str(statement), str(
-            self.chatbot.globals['history']['total'][-1]))
-        logging.info("ImitatorSensei compared {} and {}. Sim: {}"
-                     .format(str(statement), self.chatbot.globals['history']['user'][-1], sim))
+        sim = self.chatbot.lp.similarity(
+            str(statement), str(self.chatbot.globals["history"]["total"][-1])
+        )
+        logging.info(
+            "ImitatorSensei compared {} and {}. Sim: {}".format(
+                str(statement), self.chatbot.globals["history"]["user"][-1], sim
+            )
+        )
         if sim > 0.8:
             response = random_response(IMITATE)
             confidence = sim
         else:
-            response = 'Ok!'
+            response = "Ok!"
             confidence = 0
         selected_statement = SugaroidStatement(response, chatbot=True)
         selected_statement.confidence = confidence

@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +48,11 @@ class EmotionAdapter(LogicAdapter):
 
     def can_process(self, statement):
         a = self.sia.polarity_scores(str(statement))
-        if a['neu'] < 0.5:
+        # do not enable emotion adapter when
+        # we are playing akinator
+        if self.chatbot.globals["akinator"]["enabled"]:
+            return False
+        elif a["neu"] < 0.5:
             return True
         else:
             return False
@@ -59,36 +64,45 @@ class EmotionAdapter(LogicAdapter):
         emotion = Emotion.neutral
         a = self.sia.polarity_scores(raw_statement)
         response = ":)"
-        confidence = a['pos'] + a['neg']
-        if (('love' in parsed) or ('hate' in parsed)) and (('you' in parsed) or ('myself' in parsed)):
-            if a['pos'] > a['neg']:
+        confidence = a["pos"] + a["neg"]
+        if (("love" in parsed) or ("hate" in parsed)) and (
+            ("you" in parsed) or ("myself" in parsed)
+        ):
+            if a["pos"] > a["neg"]:
                 response = "I love you too"
                 emotion = Emotion.blush
             else:
                 response = "But still, I love you"
                 emotion = Emotion.lol
         else:
-            if a['pos'] > a['neg']:
-                if 'you' in parsed:
-                    response = GRATIFY[randint(0, len(GRATIFY)-1)]
+            if a["pos"] > a["neg"]:
+                if "you" in parsed:
+                    response = GRATIFY[randint(0, len(GRATIFY) - 1)]
                     emotion = Emotion.blush
                 else:
-                    if 'stop' in parsed:
-                        if ('dont' in parsed) or ('do' in parsed and 'not' in parsed) or ('don\'t' in parsed):
-                            response = 'I am here to continue my adventure forever'
+                    if "stop" in parsed:
+                        if (
+                            ("dont" in parsed)
+                            or ("do" in parsed and "not" in parsed)
+                            or ("don't" in parsed)
+                        ):
+                            response = "I am here to continue my adventure forever"
                             emotion = Emotion.positive
                         else:
                             # optimize series of or statement
-                            if \
-                                    ('fun' in parsed) or \
-                                    ('repeat' in parsed) or \
-                                    ('imitation' in parsed) or \
-                                    ('repetition' in parsed) or \
-                                    ('irritate' in parsed) or \
-                                    ('irritation' in parsed):
-                                response = "Ok! I will switch off my fun mode for sometime"
+                            if (
+                                ("fun" in parsed)
+                                or ("repeat" in parsed)
+                                or ("imitation" in parsed)
+                                or ("repetition" in parsed)
+                                or ("irritate" in parsed)
+                                or ("irritation" in parsed)
+                            ):
+                                response = (
+                                    "Ok! I will switch off my fun mode for sometime"
+                                )
                                 emotion = Emotion.neutral
-                                self.chatbot.globals['fun'] = False
+                                self.chatbot.globals["fun"] = False
                             else:
                                 response = "I am depressed. Is there anything which I hurt you? I apologize for that"
                                 emotion = Emotion.depressed
@@ -104,16 +118,16 @@ class EmotionAdapter(LogicAdapter):
                             if confidence > 0.8:
                                 confidence -= 0.2
             else:
-                if 'i' in parsed:
+                if "i" in parsed:
                     response = "Its ok,  {}.".format(
-                        CONSOLATION[randint(0, len(CONSOLATION)-1)])
+                        CONSOLATION[randint(0, len(CONSOLATION) - 1)]
+                    )
                     emotion = Emotion.positive
                 else:
                     # well, I don't want to say ( I don't know )
                     # FIXME : Use a better algorithm to detect sentences
                     reversed = reverse(parsed)
-                    response = 'Why do you think {}?'.format(
-                        ' '.join(reversed))
+                    response = "Why do you think {}?".format(" ".join(reversed))
                     emotion = Emotion.dead
 
         selected_statement = SugaroidStatement(response, chatbot=True)

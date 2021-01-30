@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +32,7 @@ from sugaroid.brain.ooo import Emotion
 from sugaroid.brain.postprocessor import random_response
 from sugaroid.brain.preprocessors import normalize, current_time
 from sugaroid.sugaroid import SugaroidStatement
+from datetime import datetime
 
 
 class TimeAdapter(LogicAdapter):
@@ -52,39 +54,127 @@ class TimeAdapter(LogicAdapter):
             return False
 
     def process(self, statement, additional_response_selection_parameters=None):
+
         emotion = Emotion.positive
+        if "at" in self.normalized or "in" in self.normalized:
+            # possibly the person is asking something like
+            # What is the time at Asia/Bahrain
+            # What is the time in Asia/Bahrain
+            if "at" in self.normalized:
+                idx = self.normalized.index("at")
+            else:
+                idx = self.normalized.index("in")
+            try:
+                place = self.normalized[idx + 1]
+            except IndexError:
+                response = "Please provide a place, for which you require time"
+                emotion = Emotion.positive
+                selected_statement = SugaroidStatement(
+                    "{}".format(response), chatbot=True
+                )
+                selected_statement.confidence = 1
+                selected_statement.emotion = emotion
+                return selected_statement
+
+            import pytz
+
+            if "/" in place:
+                region = place.split("/")[0].capitalize()
+                country = place.split("/")[1].capitalize()
+            else:
+                country = place.capitalize()
+                for region in [
+                    "Asia",
+                    "Africa",
+                    "Europe",
+                    "Australia",
+                    "America",
+                    "Antartica",
+                ]:
+                    try:
+                        tz = pytz.timezone(f"{region}/{country}")
+                        now = datetime.now(tz)
+
+                        selected_statement = SugaroidStatement(
+                            "{}".format(now.ctime()), chatbot=True
+                        )
+                        selected_statement.confidence = 1
+                        selected_statement.emotion = emotion
+                        return selected_statement
+
+                    except pytz.exceptions.UnknownTimeZoneError:
+                        # the timezone is invalid
+                        # so skip
+                        continue
+                else:
+                    # we scanned, but didnt succeed
+                    # sed.
+                    selected_statement = SugaroidStatement(
+                        "I apologize. I can't get the time for that place yet",
+                        chatbot=True,
+                    )
+                    selected_statement.confidence = 1
+                    selected_statement.emotion = emotion
+                    return selected_statement
+
+            try:
+                tz = pytz.timezone(f"{region}/{country}")
+                now = datetime.now(tz)
+
+                selected_statement = SugaroidStatement(
+                    "{}".format(now.ctime()), chatbot=True
+                )
+                selected_statement.confidence = 1
+                selected_statement.emotion = emotion
+                return selected_statement
+
+            except pytz.exceptions.UnknownTimeZoneError:
+                # we scanned, but didnt succeed
+                # sed.
+                selected_statement = SugaroidStatement(
+                    "I apologize. I can't get the time for that place yet", chatbot=True
+                )
+                selected_statement.confidence = 1
+                selected_statement.emotion = emotion
+                return selected_statement
+
         hour, minutes = current_time()
         alert = False
         if hour <= 0:
             alert = True
-            time = ''
+            time = ""
         elif hour <= 11:
-            time = 'morning'
+            time = "morning"
         elif hour <= 15:
-            time = 'afternoon'
+            time = "afternoon"
         elif hour <= 19:
-            time = 'evening'
+            time = "evening"
         elif hour <= 20:
-            time = 'night'
+            time = "night"
         else:
             alert = True
-            time = ''
+            time = ""
         if not alert:
-            if (time in self.intersect) or ('time' in self.intersect):
-                response = 'Good {}'.format(time)
+            if (time in self.intersect) or ("time" in self.intersect):
+                response = "Good {}".format(time)
             else:
-                response = 'Good {}. {}'.format(time, random_response(
-                    TIME_RESPONSE).format(list(self.intersect)[0]))
+                response = "Good {}. {}".format(
+                    time, random_response(TIME_RESPONSE).format(list(self.intersect)[0])
+                )
         else:
-            if self.chatbot.lp.similarity('good night', str(statement)) > 0.9:
-                response = 'Sweet Dreams'
+            if self.chatbot.lp.similarity("good night", str(statement)) > 0.9:
+                response = "Sweet Dreams"
                 emotion = Emotion.sleep
             else:
                 response = "You are staying up late, you should sleep right now."
                 emotion = Emotion.seriously
-
-        selected_statement = SugaroidStatement(
-            "{}".format(response), chatbot=True)
+        if "what" in str(statement).lower():
+            # the user might be asking the time
+            # so we have to inform it instead of wishing
+            # the person good morning
+            response = "The current time is {:02d}:{:02d}".format(hour, minutes)
+            emotion = Emotion.adorable
+        selected_statement = SugaroidStatement("{}".format(response), chatbot=True)
         selected_statement.confidence = 1
 
         selected_statement.emotion = emotion

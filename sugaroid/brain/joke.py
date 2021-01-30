@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -44,21 +45,23 @@ class JokeAdapter(LogicAdapter):
 
     def can_process(self, statement):
         normalized = normalize(str(statement).lower())
-        if (('tell' in normalized) or ('say' in normalized) or ('crack' in normalized)) and ('joke' in normalized):
+        if (
+            ("tell" in normalized) or ("say" in normalized) or ("crack" in normalized)
+        ) and ("joke" in normalized):
             return True
-        elif (len(normalized) == 1) and (self.chatbot.lp.similarity("joke", str(statement).lower()) >= 0.9):
+        elif (len(normalized) == 1) and (
+            self.chatbot.lp.similarity("joke", str(statement).lower()) >= 0.9
+        ):
             return True
-        elif 'joke' in normalized:
+        elif "joke" in normalized:
             return True
         else:
             return False
 
     def process(self, statement, additional_response_selection_parameters=None):
         # https://github.com/pratishrai/doraemon/blob/302a78f8ace4b4675f3cd293dce101ea448b3e13/cogs/fun.py#L15
-        url = 'https://icanhazdadjoke.com/'
-        response1 = requests.get(
-            url, headers={'Accept': 'application/json'}
-        ).json()
+        url = "https://icanhazdadjoke.com/"
+        response1 = requests.get(url, headers={"Accept": "application/json"}).json()
         response2 = requests.get(
             "https://sv443.net/jokeapi/v2/joke/Miscellaneous,Dark?type=single"
         ).json()

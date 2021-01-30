@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Inteligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,12 +25,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 """
-__version__ = '0.1'
+__version__ = "0.1"
 
 
 import json
 import os
 import time
+from colorama import Fore
 from sugaroid.config.config import ConfigManager
 
 
@@ -39,7 +41,7 @@ class SugaroidTrainer:
         print("Sugaroid Trainer v{}".format(__version__))
 
     def train(self, trainer):
-        print('Initializing trainer')
+        print("Initializing trainer")
         self.cfgmgr = ConfigManager()
 
         data = self.cfgmgr.get_config()
@@ -47,7 +49,7 @@ class SugaroidTrainer:
         for i in data:
             il.append(i)
             trainer.train(data[i])
-        with open(os.path.join(self.cfgmgr.get_cfgpath(), 'data.json'), 'w') as w:
+        with open(os.path.join(self.cfgmgr.get_cfgpath(), "data.json"), "w") as w:
             json.dump({"il": il}, w)
 
     def modify(self):
@@ -55,10 +57,13 @@ class SugaroidTrainer:
 
     @staticmethod
     def prompt_cli():
-        a = input("trainer @>")
-        if a == "Q" or a == 'q':
+        try:
+            a = input("trainer @>")
+            if a == "Q" or a == "q":
+                return False
+            return a
+        except KeyboardInterrupt:
             return False
-        return a
 
     def reset(self):
         self.cfgmgr.reset_config()

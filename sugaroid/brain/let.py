@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +46,7 @@ class LetAdapter(LogicAdapter):
 
     def can_process(self, statement):
         self.normalized = tuple(x.lower() for x in normalize(str(statement)))
-        if self.normalized[0] in ('let', 'assume'):
+        if len(self.normalized) > 1 and self.normalized[0] in ("let", "assume"):
             return True
         else:
             return False

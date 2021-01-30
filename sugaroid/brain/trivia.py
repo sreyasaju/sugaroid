@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -42,16 +43,16 @@ class TriviaAdapter(LogicAdapter):
         self.cos = None
 
     def can_process(self, statement):
-        self.cos = max([
-            self.chatbot.lp.similarity(str(statement), 'Ask ne a question'),
-            self.chatbot.lp.similarity(
-                str(statement), 'Lets have some trivia'),
-            self.chatbot.lp.similarity(str(statement), 'Play trivia'),
-            self.chatbot.lp.similarity(
-                str(statement), 'Can you ask some quiz'),
-            self.chatbot.lp.similarity(str(statement), 'Can you quiz'),
-            self.chatbot.lp.similarity(str(statement), 'Can you play trivia'),
-        ])
+        self.cos = max(
+            [
+                self.chatbot.lp.similarity(str(statement), "Ask ne a question"),
+                self.chatbot.lp.similarity(str(statement), "Lets have some trivia"),
+                self.chatbot.lp.similarity(str(statement), "Play trivia"),
+                self.chatbot.lp.similarity(str(statement), "Can you ask some quiz"),
+                self.chatbot.lp.similarity(str(statement), "Can you quiz"),
+                self.chatbot.lp.similarity(str(statement), "Can you play trivia"),
+            ]
+        )
         if self.cos > 0.9:
             return True
         else:
@@ -62,7 +63,7 @@ class TriviaAdapter(LogicAdapter):
         response = st.ask()
         selected_statement = SugaroidStatement(response, chatbot=True)
         selected_statement.confidence = self.cos
-        self.chatbot.globals['trivia_answer'] = st.answer()
+        self.chatbot.globals["trivia_answer"] = st.answer()
         emotion = Emotion.neutral
         selected_statement.emotion = emotion
         return selected_statement

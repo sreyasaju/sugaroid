@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Inteligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +44,7 @@ def sigmaSimilarity(src, dest):
         for j in dest:
             if i == j:
                 sum += 1
-    return sum/total
+    return sum / total
 
 
 def difference(lst1, lst2):
@@ -58,63 +59,63 @@ def reverse(token):
     :return: a list similar to nltk.word_tokenize
     """
     processed = []
-    has_am = 'am' in token
-    has_is = 'are' in token
+    has_am = "am" in token
+    has_is = "are" in token
     logging.info("Reverse: Received {}".format(token))
     interrogation = False
     for i in token:
         lps = LanguageProcessor().tokenize(i)[0]
-        if lps.tag_ == '.' and lps.lower_ == '?':
+        if lps.tag_ == "." and lps.lower_ == "?":
             interrogation = True
-        elif str(lps.tag_).startswith('W'):
+        elif str(lps.tag_).startswith("W"):
             interrogation = True
     for i in token:
         tagged = nltk.pos_tag([i])
-        if tagged[0][1] == 'PRP':
-            if i == 'you':
+        if tagged[0][1] == "PRP":
+            if i == "you":
                 if interrogation:
-                    processed.append('I')
+                    processed.append("I")
                 else:
-                    processed = processed[:-1] + ['I'] + processed[-1:]
-            elif i.lower() == 'i':
-                processed.append('you')
-        elif tagged[0][1] == 'VBP':
-            if i == 'are':
-                if 'I' in processed:
-                    processed.append('am')
+                    processed = processed[:-1] + ["I"] + processed[-1:]
+            elif i.lower() == "i":
+                processed.append("you")
+        elif tagged[0][1] == "VBP":
+            if i == "are":
+                if "I" in processed:
+                    processed.append("am")
                 else:
-                    processed.append('are')
-            elif i == 'am':
-                if 'I' in processed:
-                    processed.append('am')
+                    processed.append("are")
+            elif i == "am":
+                if "I" in processed:
+                    processed.append("am")
                 else:
-                    processed.append('are')
+                    processed.append("are")
             else:
-                processed.append('are')
+                processed.append("are")
         else:
             processed.append(i)
 
-    for j in range(0, len(processed)-2):
-        if processed[j] == 'I' and processed[j+1] == 'are':
-            processed[j+1] = 'am'
-        elif processed[j] == 'you' and processed[j+1] == 'am':
-            processed[j + 1] = 'are'
+    for j in range(0, len(processed) - 2):
+        if processed[j] == "I" and processed[j + 1] == "are":
+            processed[j + 1] = "am"
+        elif processed[j] == "you" and processed[j + 1] == "am":
+            processed[j + 1] = "are"
         else:
             continue
 
-    for j in range(0, len(processed)-2):
-        if processed[j] == 'I' and processed[j+1] == 'are':
-            processed[j] = 'you'
-        elif processed[j] == 'you' and processed[j+1] == 'am':
-            processed[j] = 'I'
+    for j in range(0, len(processed) - 2):
+        if processed[j] == "I" and processed[j + 1] == "are":
+            processed[j] = "you"
+        elif processed[j] == "you" and processed[j + 1] == "am":
+            processed[j] = "I"
         else:
             continue
 
-    for j in range(0, len(processed)-2):
-        if processed[j] == 'are' and processed[j+1] == 'I':
-            processed[j] = 'am'
-        elif processed[j] == 'am' and processed[j+1] == 'you':
-            processed[j] = 'are'
+    for j in range(0, len(processed) - 2):
+        if processed[j] == "are" and processed[j + 1] == "I":
+            processed[j] = "am"
+        elif processed[j] == "am" and processed[j + 1] == "you":
+            processed[j] = "are"
         else:
             continue
 
@@ -128,7 +129,7 @@ def random_response(iterable=()):
     :param iterable:
     :return: a selected value of the iterable
     """
-    return iterable[randint(0, len(iterable)-1)]
+    return iterable[randint(0, len(iterable) - 1)]
 
 
 def cosine_similarity(X_list, Y_list):
@@ -137,13 +138,13 @@ def cosine_similarity(X_list, Y_list):
     # two sentences using cosine similarity.
 
     # sw contains the list of stopwords
-    sw = stopwords.words('english')
+    sw = stopwords.words("english")
     l1 = []
     l2 = []
 
     # remove stop words from string
-    X_set = {w for w in X_list if not w in sw}
-    Y_set = {w for w in Y_list if not w in sw}
+    X_set = {w for w in X_list if w not in sw}
+    Y_set = {w for w in Y_list if w not in sw}
 
     # form a set containing keywords of both strings
     rvector = X_set.union(Y_set)
@@ -222,13 +223,40 @@ def text2int(textnum, numwords={}):
     """
     if not numwords:
         units = [
-            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
-            "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-            "sixteen", "seventeen", "eighteen", "nineteen",
+            "zero",
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six",
+            "seven",
+            "eight",
+            "nine",
+            "ten",
+            "eleven",
+            "twelve",
+            "thirteen",
+            "fourteen",
+            "fifteen",
+            "sixteen",
+            "seventeen",
+            "eighteen",
+            "nineteen",
         ]
 
-        tens = ["", "", "twenty", "thirty", "forty",
-                "fifty", "sixty", "seventy", "eighty", "ninety"]
+        tens = [
+            "",
+            "",
+            "twenty",
+            "thirty",
+            "forty",
+            "fifty",
+            "sixty",
+            "seventy",
+            "eighty",
+            "ninety",
+        ]
 
         scales = ["hundred", "thousand", "million", "billion", "trillion"]
 

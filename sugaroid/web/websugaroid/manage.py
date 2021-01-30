@@ -4,7 +4,8 @@ MIT License
 
 Sugaroid Artificial Inteligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +31,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'websugaroid.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "websugaroid.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -42,5 +43,5 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

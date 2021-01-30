@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +41,7 @@ class ResetAdapter(LogicAdapter):
 
     def can_process(self, statement):
         normalized = normalize(str(statement).lower())
-        if 'reset' in normalized and 'admin' in normalized:
+        if "reset" in normalized and "admin" in normalized:
             return True
         else:
             return False
@@ -48,7 +49,8 @@ class ResetAdapter(LogicAdapter):
     def process(self, statement, additional_response_selection_parameters=None):
         self.chatbot.reset_variables()
         selected_statement = SugaroidStatement(
-            "Reset of chatbot variables. SUCCESS", chatbot=True)
+            "Reset of chatbot variables. SUCCESS", chatbot=True
+        )
         selected_statement.confidence = 0.95
 
         emotion = Emotion.neutral

@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +30,6 @@ import time
 from chatterbot.logic import LogicAdapter
 from sugaroid.brain.ooo import Emotion
 from sugaroid.brain.preprocessors import spac_token
-from sugaroid.game.game import games
 from sugaroid.sugaroid import SugaroidStatement
 
 
@@ -42,40 +42,30 @@ class PlayAdapter(LogicAdapter):
         super().__init__(chatbot, **kwargs)
 
     def can_process(self, statement):
-        game, askGame = False, False
-        for i in spac_token(statement, chatbot=self.chatbot):
-            if i.lower_ in games:
-                game = True
-                self.game = i.lower_
-            elif i.lower_ == 'play':
-                askGame = True
-
-        if game and askGame:
-            return True
-        else:
-            return False
+        return False
 
     def process(self, statement, additional_response_selection_parameters=None):
-        response = 'I can\t run the same game again. Soz!'
-        confidence = .5
+        response = "I can\t run the same game again. Soz!"
+        confidence = 0.5
         sent = []
         for i in games:
-            sent.append('play the game {}'.format(i))
-            sent.append('can you play the game {}'.format(i))
+            sent.append("play the game {}".format(i))
+            sent.append("can you play the game {}".format(i))
         cos = []
         for j in sent:
             cos.append(self.chatbot.lp.similarity(j, str(statement)))
         maxcos = max(cos)
-        response = 'Ok, I guess your game was great!'
+        response = "Ok, I guess your game was great!"
         try:
-            exec('from freegames import {}'.format(self.game))
+            exec("from freegames import {}".format(self.game))
         except Exception as e:
-            response = 'Oops, it cant run on your system'
+            response = "Oops, it cant run on your system"
         import os
+
         try:
-            if os.environ['SUGAROID'] == 'CLI':
-                input('Enter any key to continue to Sugaroid')
-            elif os.environ['SUGAROID'] == 'GUI':
+            if os.environ["SUGAROID"] == "CLI":
+                input("Enter any key to continue to Sugaroid")
+            elif os.environ["SUGAROID"] == "GUI":
                 time.sleep(5)
         except KeyError:
             pass

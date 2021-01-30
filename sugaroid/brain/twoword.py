@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +30,7 @@ from chatterbot.logic import LogicAdapter
 from nltk import word_tokenize, pos_tag
 
 from sugaroid.version import VERSION
-from sugaroid.brain.constants import BYE, ANNOYED, WHO_AM_I, WHO_ARE_YOU, SUGAROID
+from sugaroid.brain.constants import BYE, ONE_WORD, WHO_AM_I, WHO_ARE_YOU, SUGAROID
 from sugaroid.brain.myname import MyNameAdapter
 from sugaroid.brain.ooo import Emotion
 from sugaroid.brain.postprocessor import random_response
@@ -65,20 +66,20 @@ class TwoWordAdapter(LogicAdapter):
     def process(self, statement, additional_response_selection_parameters=None):
         emotion = Emotion.seriously
         confidence = 0.81
-        response = random_response(ANNOYED)
+        response = random_response(ONE_WORD)
         short = str(statement).lower()
 
-        if ('name' in short) and ('my' in short):
-            if self.chatbot.globals['USERNAME']:
-                response = 'You are {}'.format(
-                    self.chatbot.globals['USERNAME'])
+        if ("name" in short) and ("my" in short):
+            if self.chatbot.globals["USERNAME"]:
+                response = "You are {}".format(self.chatbot.globals["USERNAME"])
             else:
                 response = random_response(WHO_AM_I)
 
-        elif ('name' in short) and ('your' in short):
+        elif ("name" in short) and ("your" in short):
             v = VERSION
             response = "\n{} \n{}. \nBuild: {}".format(
-                SUGAROID[0], random_response(WHO_ARE_YOU), v.get_commit())
+                SUGAROID[0], random_response(WHO_ARE_YOU), v.get_commit()
+            )
 
         else:
             confidence = 0.2

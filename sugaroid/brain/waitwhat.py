@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -47,8 +48,8 @@ class WaitWhatAdapter(LogicAdapter):
     def process(self, statement, additional_response_selection_parameters=None):
         response = "What?"
         selected_statement = SugaroidStatement(response, chatbot=True)
-        if self.chatbot.globals['history']['total'][-1] != 0:
-            selected_statement = self.chatbot.globals['history']['total'][-1]
+        if self.chatbot.globals["history"]["total"][-1] != 0:
+            selected_statement = self.chatbot.globals["history"]["total"][-1]
 
         selected_statement.confidence = 1
         selected_statement.emotion = Emotion.angel

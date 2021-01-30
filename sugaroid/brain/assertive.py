@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -46,13 +47,19 @@ class AssertiveAdapter(LogicAdapter):
     def can_process(self, statement):
         if len(str(statement).split()) >= 3:
             s = statement.doc
-            if (s[0].pos_ in ["its", 'this'] or s[0].lower_ == "it") and (s[1].pos_ == "NOUN" or s[1].pos_ == "VERB" or (s[1].pos_ == "ADV" and s[2].pos_ == "VERB")):
+            if (s[0].pos_ in ["its", "this"] or s[0].lower_ == "it") and (
+                s[1].pos_ == "NOUN"
+                or s[1].pos_ == "VERB"
+                or (s[1].pos_ == "ADV" and s[2].pos_ == "VERB")
+            ):
                 return True
             else:
                 return False
         elif len(str(statement).split()) >= 2:
             s = statement.doc
-            if (s[0].pos_ == "DET" or s[0].lower_ == "it's") and (s[1].pos_ == "NOUN" or s[1].pos_ == "VERB"):
+            if (s[0].pos_ == "DET" or s[0].lower_ == "it's") and (
+                s[1].pos_ == "NOUN" or s[1].pos_ == "VERB"
+            ):
                 return True
             else:
                 return False
@@ -66,7 +73,7 @@ class AssertiveAdapter(LogicAdapter):
 
         sia = SentimentIntensityAnalyzer()
         ps = sia.polarity_scores(str(statement))
-        if ps['neu'] == 1 or (ps['pos'] > ps['neg']):
+        if ps["neu"] == 1 or (ps["pos"] > ps["neg"]):
             response = random_response(SUGAROID_CAN_AGREE)
             confidence = 0.81
         else:

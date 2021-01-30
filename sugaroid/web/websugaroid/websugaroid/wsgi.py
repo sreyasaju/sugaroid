@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Inteligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +37,7 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/
 
 import os
 from django.core.wsgi import get_wsgi_application
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'websugaroid.settings')
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "websugaroid.settings")
 
 application = get_wsgi_application()

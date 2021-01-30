@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Inteligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +35,13 @@ class SugaroidTrivia:
         self.random_question_instance = db[randint(0, 50)]
 
     def ask(self):
-        category = self.random_question_instance['category']
-        difficulty = self.random_question_instance['difficulty']
-        question = self.random_question_instance['question']
-        self.answer_i = self.random_question_instance['correct_answer']
-        return "Category: {c}\nDifficulty: {d}\n\n{q}".format(c=category, d=difficulty, q=question)
+        category = self.random_question_instance["category"]
+        difficulty = self.random_question_instance["difficulty"]
+        question = self.random_question_instance["question"]
+        self.answer_i = self.random_question_instance["correct_answer"]
+        return "Category: {c}\nDifficulty: {d}\n\n{q}".format(
+            c=category, d=difficulty, q=question
+        )
 
     def answer(self):
         return self.answer_i

@@ -3,7 +3,8 @@ MIT License
 
 Sugaroid Artificial Intelligence
 Chatbot Core
-Copyright (c) 2020 Srevin Saju
+Copyright (c) 2020-2021 Srevin Saju
+Copyright (c) 2021 The Sugaroid Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +48,7 @@ class WhoAdapter(LogicAdapter):
     def can_process(self, statement):
         self.normalized = normalize(str(statement))
         self.token = pos_tag(self.normalized)
-        if 'who' in self.normalized:
+        if "who" in self.normalized:
             return True
         else:
             return False
@@ -56,27 +57,28 @@ class WhoAdapter(LogicAdapter):
         confidence = 0.95
         # FIXME Creates unusual response
 
-        if 'do you know' in str(statement).lower():
-            if self.normalized[0] == 'do':
+        if "do you know" in str(statement).lower():
+            if self.normalized[0] == "do":
                 self.normalized.pop(0)
-                if self.normalized[0] == 'you':
+                if self.normalized[0] == "you":
                     self.normalized.pop(0)
-                    if self.normalized[0] == 'know':
+                    if self.normalized[0] == "know":
                         self.normalized.pop(0)
 
-        if 'i' in self.normalized:
+        if "i" in self.normalized:
             response = random_response(WHO_AM_I)
-        elif 'you' in self.normalized:
-            if 'to' in self.normalized:
+        elif "you" in self.normalized:
+            if "to" in self.normalized:
                 confidence = 0.5
-                response = 'You!'
+                response = "You!"
             else:
 
                 v = VERSION
                 response = "\n{} \n{}. \nBuild: {}".format(
-                    SUGAROID[0], random_response(WHO_ARE_YOU), v.get_commit())
+                    SUGAROID[0], random_response(WHO_ARE_YOU), v
+                )
         else:
-            response = 'check the wiki'
+            response = "check the wiki"
             confidence = 0
 
         selected_statement = SugaroidStatement(response, chatbot=True)

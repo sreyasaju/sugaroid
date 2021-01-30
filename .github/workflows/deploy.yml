@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy
+
+on:
+  push:
+    branches:
+     - master
+     - main
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include: 
+          - app: 'sugaroid-telegram'
+            KEY_IDX: 'SUGAROID_TELEGRAM_API_KEY'
+          - app: 'sugaroid-discord'
+            KEY_IDX: 'SUGAROID_DISCORD_API_KEY'
+    
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Clone ${{ matrix.apps }}
+        run: |
+          cd /tmp
+          git clone https://github.com/sugaroidbot/${{ matrix.app }}.git
+          cd ${{ matrix.app }}
+          sed -i "s,git+https://gitlab.com/sugaroid/sugaroid.git,https://github.com/sugaroidbot/sugaroid/archive/$GITHUB_SHA.tar.gz,g" requirements.txt
+ 
+      - name: Deploy to HKU
+        run: |
+          cd /tmp/${{ matrix.app }}
+          sudo gem install bundler
+          sudo gem install dpl --pre 
+          dpl --provider=heroku --app=${{ matrix.app }} --api-key=${{ secrets[matrix.KEY_IDX] }}
+          

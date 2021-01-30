@@ -9,7 +9,7 @@ description: 'Your personal, friendly new-born assistant'
 ## Important
 * Sugaroid is an open source software. The web server is deployed on Microsoft Azure. Your support for this open source software is highly necessary to make this project continued to be served on the world wide web. Consider being my patron to help Sugaroid host its servers or if you are willing to lend servers for Sugaroid, press the sponsor button and email me. Thanks. However, Sugaroid will always remain free forever :smile:
 * Sugaroid core repository has moved to [GitLab](https://gitlab.com). The new repository is available [here](https://gitlab.com/srevinsaju/sugaroid), kindly send your Pull Requests and Issues to [gitlab](https://gitlab.com/srevinsaju/sugaroid). This repository is now only a **mirror**. 
-=======
+
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Chat on Discord](https://img.shields.io/discord/801396971138580540?color=7281da&label=Chat%20on%20Discord&logo=discord&logoColor=white)](https://discord.gg/EWaYYYjgJw)
 [![Sugaroid Bot](https://img.shields.io/badge/sugaroid-core-%23f70049)](https://github.com/sugaroidbot/sugaroid)
@@ -20,7 +20,7 @@ description: 'Your personal, friendly new-born assistant'
 ## Important
 * Sugaroid is an open source software. The web server is deployed on Microsoft Azure. Your support for this open source software is highly necessary to make this project continued to be served on the world wide web. Consider being my patron to help Sugaroid host its servers or if you are willing to lend servers for Sugaroid, press the sponsor button and email me. Thanks. However, Sugaroid will always remain free forever :smile:
 
-=======
+
 
 > **IMPORTANT** : Sugaroid is an open source software. The web server is deployed on Microsoft Azure. Your support for this open source software is highly necessary to make this project continued to be served on the world wide web. Consider being my patron to help Sugaroid host its servers or if you are willing to lend servers for Sugaroid, press the sponsor button and email me. Thanks. However, Sugaroid will always remain free forever :smile:
 
@@ -30,10 +30,10 @@ description: 'Your personal, friendly new-born assistant'
 ## License
 
 This repository is licensed under the MIT License (2020)
-=======
+
 This repository is licensed under the MIT License (2020-2021)
 
-=======
+
 **Sugaroid AI** has become possible to millions of open source developers. Particularly to mention, I would like to thank [**@GuntherCox**](https://github.com/gunthercox) for the `chatterbot` library and [**@explosion**](https://explosion.ai) **for** [**`spaCy`**](https://github.com/explosion/spaCy) , the machine learning library with which it was possible to make natural language processing easy as pie. Also, the millions of word collection on `en_core_web_sm`, `en_core_web_md` was contributed by developers across the globe for translation and linguistic differentiation. I would also like to thank, Sugar Labs 2019 GCI Team, **Sashreek Magan** \(aka [@smag](https://github.com/smag)\), **Andrea Gonzales** \(aka [@andreagon](https://github.com/AndreaGon)\), **Zakiyah Hasanah** \(aka [@kiy4h](https://github.com/Kiy4h)\), **Rishikesh Joshi** \(aka [@Creatune](https://github.com/Creatune)\), **Szymon** \(aka [@sdziuda](https://github.com/sdziuda)\) and **Marcus Chong** \(aka [@pidddgy](https://github.com/pidddgy)\) for continuous testing on servers and reporting bugs. It is only possible to rectify bugs with the help of repeated testing. I would also like to thank friends and family who also helped me to work on this project. Along with this, I would like to extend gratitude to **Microsoft** for sponsoring [Sugaroid’s hosting on Azure](https://sugaroid.azurewebsites.net).
 
 ### Table of Contents
